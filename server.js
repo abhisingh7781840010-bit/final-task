@@ -9,7 +9,11 @@ const app=express();
 
 connectDB();
 app.use(cors({
-  origin: "https://parakh4.vercel.app",
+  origin: ["https://parakh4.vercel.app",
+          "http://localhost:5173",
+          "http://localhost:3000",
+        ],
+
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
