@@ -8,8 +8,13 @@ dotenv.config();
 const app=express();
 
 connectDB();
+app.use(cors({
+  origin: "https://parakh4.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
-app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth",require("./routes/auth.routes"));
@@ -19,6 +24,7 @@ app.use("/api/skill-gap",require("./routes/skillGap.routes"));
 app.use("/api/cluster-student",require("./routes/cluster.routes"));
 app.use("/api/career",require("./routes/career.routes"));
 app.use("/api/recommend-careers",require("./routes/recommendation.routes"));
+app.use("/api", require("./routes/ml.routes"));
 
 app.get("/",(req,res)=>{
     res.json({
@@ -36,6 +42,6 @@ app.use((err,req,res,next)=>{
 
 const PORT=process.env.PORT||5000;
 
-app.listen(PORT,()=>{
+app.listen(PORT,"0.0.0.0",()=>{
     console.log(`Server running on port ${PORT}`);
 });

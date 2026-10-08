@@ -1,26 +1,96 @@
-const axios=require("axios");
+const axios = require("axios");
 
-const ML_SERVICE_URL=process.env.ML_SERVICE_URL;
+const ML_API_URL = process.env.ML_API_URL;
 
-const predictCareer=async(data)=>{
-    const response=await axios.post(
-        `${ML_SERVICE_URL}/predict-career`,
-        data
-    );
+const getMLBaseURL = () => {
+  if (!ML_API_URL) {
+    throw new Error("ML_API_URL environment variable is not configured");
+  }
 
-    return response.data;
+  return ML_API_URL.replace(/\/+$/, "");
 };
 
-const predictCluster=async(data)=>{
-    const response=await axios.post(
-        `${ML_SERVICE_URL}/cluster-student`,
-        data
-    );
+const callML = async (endpoint, payload = {}) => {
+  const baseURL = getMLBaseURL();
+
+  const url = `${baseURL}${endpoint}`;
+
+  console.log("=================================");
+  console.log("ML API REQUEST");
+  console.log("URL:", url);
+  console.log("Payload:", JSON.stringify(payload));
+  console.log("=================================");
+
+  try {
+    const response = await axios.post(url, payload, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      timeout: 60000,
+    });
+
+    console.log("=================================");
+    console.log("ML API RESPONSE");
+    console.log("Status:", response.status);
+    console.log("Data:", JSON.stringify(response.data));
+    console.log("=================================");
 
     return response.data;
+  } catch (error) {
+    console.error("=================================");
+    console.error("ML API REQUEST FAILED");
+    console.error("URL:", url);
+    console.error("Status:", error.response?.status);
+    console.error("Response:", error.response?.data);
+    console.error("Message:", error.message);
+    console.error("=================================");
+
+    throw error;
+  }
 };
 
-module.exports={
-    predictCareer,
-    predictCluster
+
+const checkMLHealth = async () => {
+  const baseURL = getMLBaseURL();
+
+  const url = `${baseURL}/health`;
+
+  try {
+    const response = await axios.get(url, {
+      timeout: 15000,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("ML health check failed:", {
+      url,
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    });
+
+    throw error;
+  }
+};
+
+
+const predictCareer = async (payload) => {
+  return callML("/predict", payload);
+};
+
+const predictCluster = async (payload) => {
+  return callML("/cluster", payload);
+};
+
+const calculateSkillGap = async (payload) => {
+  return callML("/skill-gap", payload);
+};
+
+
+module.exports = {
+  callML,
+  checkMLHealth,
+  predictCareer,
+  predictCluster,
+  calculateSkillGap,
 };
