@@ -12,12 +12,15 @@ app.use(cors({
   origin: ["https://parakh4.vercel.app",
           "http://localhost:5173",
           "http://localhost:3000",
+          "https://final-task-5.onrender.com",
         ],
 
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
+app.options("*",cors());
 
 app.use(express.json());
 
