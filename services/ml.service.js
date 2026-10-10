@@ -53,7 +53,7 @@ const callML = async (endpoint, payload = {}) => {
 const checkMLHealth = async () => {
   const baseURL = getMLBaseURL();
 
-  const url = `${baseURL}/health`;
+  const url = `${baseURL}/`;  //`${baseURL}/health`   -> `${baseURL}/'
 
   try {
     const response = await axios.get(url, {
