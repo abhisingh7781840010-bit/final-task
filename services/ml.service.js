@@ -15,11 +15,9 @@ const callML = async (endpoint, payload = {}) => {
 
   const url = `${baseURL}${endpoint}`;
 
-  console.log("=================================");
   console.log("ML API REQUEST");
   console.log("URL:", url);
   console.log("Payload:", JSON.stringify(payload));
-  console.log("=================================");
 
   try {
     const response = await axios.post(url, payload, {
@@ -29,21 +27,17 @@ const callML = async (endpoint, payload = {}) => {
       timeout: 60000,
     });
 
-    console.log("=================================");
     console.log("ML API RESPONSE");
     console.log("Status:", response.status);
     console.log("Data:", JSON.stringify(response.data));
-    console.log("=================================");
 
     return response.data;
   } catch (error) {
-    console.error("=================================");
     console.error("ML API REQUEST FAILED");
     console.error("URL:", url);
     console.error("Status:", error.response?.status);
     console.error("Response:", error.response?.data);
     console.error("Message:", error.message);
-    console.error("=================================");
 
     throw error;
   }
@@ -85,7 +79,6 @@ const predictCluster = async (payload) => {
 const calculateSkillGap = async (payload) => {
   return callML("/skill-gap", payload);
 };
-
 
 module.exports = {
   callML,

@@ -3,9 +3,9 @@ const express=require("express");
 const router=express.Router();
 
 const {
-    skillGap
+    analyzeSkillGap
 }=require("../controllers/skillGap.controller");
 
-router.post("/",skillGap);
-
+router.post("/",analyzeSkillGap);
+//skillGap
 module.exports=router;
