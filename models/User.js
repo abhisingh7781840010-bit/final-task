@@ -48,8 +48,27 @@ const userSchema=new mongoose.Schema({
     otpPurpose:{
         type:String,
         default:null
-    }
+    },
+     branch: {
+        type: String,
+        default: ""
+    },
 
+    experience_years: {
+        type: Number,
+        default: 0
+    },
+
+    skills: {
+        type: mongoose.Schema.Types.Mixed,
+        default: {}
+    },
+
+    interests: {
+        type: [String],
+        default: []
+    },
+     
 },{timestamps:true});
 
 module.exports=mongoose.model("User",userSchema);

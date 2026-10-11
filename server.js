@@ -21,6 +21,7 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use("/api/profile", require("./routes/profile.routes"));
 app.use("/api/auth",require("./routes/auth.routes"));
 app.use("/api/student",require("./routes/student.routes"));
 app.use("/api/predict-career",require("./routes/prediction.routes"));
@@ -29,6 +30,7 @@ app.use("/api/cluster-student",require("./routes/cluster.routes"));
 app.use("/api/career",require("./routes/career.routes"));
 app.use("/api/recommend-careers",require("./routes/recommendation.routes"));
 app.use("/api", require("./routes/ml.routes"));
+ 
 
 app.get("/",(req,res)=>{
     res.json({
